@@ -1,17 +1,18 @@
 "use client";
 
-import FoodContainer from "@/components/pages/food-container";
+import FoodContainer from "@/components/pages/food-item";
 
 export interface Food {
   id: number;
   name: string;
   href: string;
-  price: string;
+  price: number;
   description: string;
-  options: "normal" | "large";
+  options: ("small" | "large")[]
   imageSrc: string;
   imageAlt: string;
-}
+  additionPrice : number
+} 
 
 export default function Foods({ foods }: { foods: Food[] }) {
   return (
@@ -21,7 +22,7 @@ export default function Foods({ foods }: { foods: Food[] }) {
 
         <div className="grid gap-y-4 grid-cols-2 gap-x-2 sm:gap-x-6 sm:gap-y-10 md:grid-cols-1 xl:grid-cols-3 lg:gap-x-8">
           {foods.map((food: Food) => {
-            return <FoodContainer key={food.id} food={food} />;
+            return <FoodContainer key={`${food.id}-${food.name}`} food={food} />;
           })}
         </div>
       </div>

@@ -29,13 +29,13 @@ export default async function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen flex bg-background font-sans antialiased",
+          "min-h-screen flex bg-background font-sans antialiased select-text selection:bg-primary selection:text-white",
           fontSans.variable
         )}
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >

@@ -3,7 +3,7 @@
 import { foods } from "@/constants/data";
 import Link from "next/link";
 import { Food } from "./foods";
-import FoodContainer from "./pages/food-container";
+import FoodContainer from "./pages/food-item";
 
 export default function FoodSummery() {
   return (
