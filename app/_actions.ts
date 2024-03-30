@@ -55,3 +55,21 @@ export async function getUserShippingInfo(): Promise<z.infer<
     return null;
   }
 }
+
+export async function AddToCart(data : any) {
+  const cart = cookies().get("user-shipping");
+
+  const expires = new Date();
+  expires.setFullYear(expires.getFullYear() + 10);
+
+
+
+
+  cookies().set({
+    name: "default-cart",
+    value: JSON.stringify({}),
+    httpOnly: true,
+    path: "/",
+    expires,
+  });
+}

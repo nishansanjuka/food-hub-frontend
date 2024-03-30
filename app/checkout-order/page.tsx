@@ -5,7 +5,7 @@ export default function OrderCheckOut() {
   return (
     <div className="h-screen w-full">
       <ScrollArea
-       className=" w-full sm:p-20 h-screen">
+       className=" p-5 md:p-10 xl:p-0 w-full h-screen">
         <CheckoutForm/>
       </ScrollArea>
     </div>
