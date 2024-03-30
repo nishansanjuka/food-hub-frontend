@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useEffect, useState } from "react";
+import { AddToCart } from "../_actions";
 
 export const cartFormSchema = z.object({
   id: z.string(),
@@ -24,7 +25,7 @@ export const cartFormSchema = z.object({
     message: "amount cannot be '0'",
     path: ["id"],
   }),
-  option: z.string().optional(),
+  option: z.enum(["small" , "large"]),
 });
 
 export default function CartForm({ food }: { food: Food }) {
@@ -61,7 +62,7 @@ export default function CartForm({ food }: { food: Food }) {
 
   async function onSubmit(values: z.infer<typeof cartFormSchema>) {
     setLoad(true);
-    console.log(values);
+    await AddToCart(values);
     setLoad(false);
   }
 

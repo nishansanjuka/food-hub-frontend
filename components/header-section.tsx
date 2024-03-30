@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { Resturant } from "@/constants/data";
 import { cn } from "@/lib/utils";
 import HomeNav from "./layout/home-nav";
-import { ThemesMenu } from "./themes-menu";
+import PopUpCart from "./layout/cart-popup";
 
 export default function HeaderSection() {
   const [scrollY, setScrollY] = useState<boolean>(false);
@@ -43,7 +43,7 @@ export default function HeaderSection() {
           {Resturant.name}
         </h1>
         <HomeNav/>
-        <ThemesMenu width="w"/>
+        <PopUpCart/>
       </div>
     </div>
   );
