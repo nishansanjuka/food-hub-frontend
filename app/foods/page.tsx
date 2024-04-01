@@ -19,7 +19,7 @@ export default function FoodsPage() {
               or discover something new to try!
             </p>
           </div>
-          <div className=" hidden sm:block">
+          <div className="  hidden sm:block">
           <PopUpCart/>
           </div>
         </div>

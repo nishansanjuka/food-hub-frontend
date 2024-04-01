@@ -41,7 +41,7 @@ export default function CheckoutForm() {
                 </h2>
 
                 <ScrollArea className=" xl:px-5">
-                  <ul role="list" className=" xl:h-[60vh] 2xl:h-[75vh]">
+                  <ul role="list" className=" xl:h-[60vh] 2xl:h-[74vh]">
                     {orderItems && orderItems?.length > 0 ? (
                       orderItems.map((order, foodIdx) => (
                         <li key={foodIdx}>

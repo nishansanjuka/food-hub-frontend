@@ -16,13 +16,19 @@ import { X } from "lucide-react";
 import { Skeleton } from "../ui/skeleton";
 import { useUpdateCart } from "../context-hooks/cart-context";
 
-export default function OrderItem({ order , loading}: { order: CheckoutCart , loading? :boolean }) {
+export default function OrderItem({
+  order,
+  loading,
+}: {
+  order: CheckoutCart;
+  loading?: boolean;
+}) {
   const [amount, setAmount] = useState<number | null>(null);
 
   const [load, setLoad] = useState<boolean>(false);
   const [removeLoad, setRemoveLoad] = useState<boolean>(false);
 
-  const [Order, setOrder] = useState<CheckoutCart | null>(null);
+  // const [Order, setOrder] = useState<CheckoutCart | null>(null);
 
   const amountRef = useRef<HTMLInputElement>(null);
 
@@ -41,15 +47,17 @@ export default function OrderItem({ order , loading}: { order: CheckoutCart , lo
   };
 
   useEffect(() => {
-    if (!Order) {
-      setOrder(order);
-    }
+    // if (!Order) {
+    //   setOrder(order);
+    // }
 
     async function handleUpdate() {
       setLoad(true);
-      if (Order) {
-        await updateCart(Order.cart.id, Order.cart.option, amount ? amount : 1);
-      }
+      // if (Order) {
+      //   await updateCart(Order.cart.id, Order.cart.option, amount ? amount : 1);
+      // }
+
+      await updateCart(order.cart.id, order.cart.option, amount ? amount : 1);
 
       const obj: CheckoutCart = (await GetCart()).find(
         (cart) =>
@@ -57,7 +65,7 @@ export default function OrderItem({ order , loading}: { order: CheckoutCart , lo
           cart.cart.option === order.cart.option
       ) as CheckoutCart;
 
-      setOrder(obj ? obj : null);
+      // setOrder(obj ? obj : null);
       setLoad(false);
     }
 
@@ -94,32 +102,31 @@ export default function OrderItem({ order , loading}: { order: CheckoutCart , lo
 
   const handleRemove = async () => {
     setRemoveLoad(true);
-    if (Order) {
-      await removeCartItem(Order.cart.id, Order.cart.option);
+    // if (Order) {
+    //   await removeCartItem(Order.cart.id, Order.cart.option);
 
-      const obj: CheckoutCart = (await GetCart()).find(
-        (cart) =>
-          cart.cart.id === order.cart.id &&
-          cart.cart.option === order.cart.option
-      ) as CheckoutCart;
+    //   await setCartItems();
+    //   setOrder(null);
+    //   setRemoveLoad(false);
+    // }
 
-      await setCartItems();
-      setOrder(null);
-      setRemoveLoad(false);
-    }
+    await removeCartItem(order.cart.id, order.cart.option);
+
+    await setCartItems();
+    setRemoveLoad(false);
   };
 
   return (
     <div>
       <Toaster />
-      {Order && (
+      {order && (
         <div className="flex py-6 sm:py-10 items-center border-b border-border">
           {!removeLoad && !loading ? (
             <Fragment>
               <div className="relative aspect-h-4 aspect-w-4 bg-accent sm:aspect-none group-hover:opacity-75 h-full">
                 <Image
-                  src={Order.imgSrc}
-                  alt={Order.imgSrc}
+                  src={order.imgSrc}
+                  alt={order.imgSrc}
                   width={500}
                   height={500}
                   className={cn(
@@ -133,11 +140,11 @@ export default function OrderItem({ order , loading}: { order: CheckoutCart , lo
                   <div>
                     <div className="flex justify-between">
                       <h3 className="text-foreground text-2xl font-bold">
-                        {Order.name}
+                        {order.name}
                       </h3>
                     </div>
                     <div className="mt-1 flex text-xs sm:text-sm">
-                      {Order.cart.option}
+                      {order.cart.option}
                     </div>
 
                     {!load ? (
@@ -146,10 +153,10 @@ export default function OrderItem({ order , loading}: { order: CheckoutCart , lo
                           style: "currency",
                           currency: "LKR",
                         }).format(
-                          Order.cart.option === "large"
-                            ? (Order.price + Order.additionPrice) *
-                                Order.cart.amount
-                            : Order.price * Order.cart.amount
+                          order.cart.option === "large"
+                            ? (order.price + order.additionPrice) *
+                                order.cart.amount
+                            : order.price * order.cart.amount
                         )}
                       </p>
                     ) : (
@@ -169,25 +176,25 @@ export default function OrderItem({ order , loading}: { order: CheckoutCart , lo
                       <button
                         disabled={load}
                         onClick={handleDropAmount}
-                        className=" select-none hover:bg-primary/5 focus:bg-primary/10 transition-colors duration-300 cursor-pointer aspect-square border-r border-border w-6 md:w-9 flex justify-center items-center text-foreground font-extrabold"
+                        className=" select-none hover:bg-primary/5 focus:bg-primary/10 transition-colors duration-300 cursor-pointer aspect-square border-r border-border w-6  flex justify-center items-center text-foreground font-extrabold"
                       >
                         -
                       </button>
 
-                      <span className=" relative aspect-square w-6 md:w-9 ">
+                      <span className=" relative aspect-square w-6  ">
                         <div>
                           <div className="absolute top-0 left-0  right-0 bottom-0">
                             <div className=" h-full">
                               <Input
                                 disabled={load}
-                                defaultValue={Order.cart.amount}
+                                defaultValue={order.cart.amount}
                                 min={"1"}
                                 max={"20"}
                                 ref={amountRef}
                                 onChange={handleOrderAmount}
                                 type="number"
                                 className={cn(
-                                  " h-full border-none text-xs xl:text-lg appearance-none  bg-transparent outline-none text-center p-1 focus-visible:ring-0 focus-visible:ring-none focus-visible:ring-offset-0"
+                                  " h-full border-none text-xs  appearance-none  bg-transparent outline-none text-center p-1 focus-visible:ring-0 focus-visible:ring-none focus-visible:ring-offset-0"
                                 )}
                               />
                             </div>
@@ -198,7 +205,7 @@ export default function OrderItem({ order , loading}: { order: CheckoutCart , lo
                       <button
                         disabled={load}
                         onClick={handleAddAmount}
-                        className=" select-none hover:bg-primary/5 focus:bg-primary/10 transition-colors duration-300 cursor-pointer aspect-square border-l border-border w-6 md:w-9 flex justify-center items-center text-foreground font-extrabold"
+                        className=" select-none hover:bg-primary/5 focus:bg-primary/10 transition-colors duration-300 cursor-pointer aspect-square border-l border-border w-6  flex justify-center items-center text-foreground font-extrabold"
                       >
                         +
                       </button>
@@ -207,7 +214,7 @@ export default function OrderItem({ order , loading}: { order: CheckoutCart , lo
 
                   <button
                     onClick={handleRemove}
-                    className=" absolute bottom-2 right-0 flex items-center text-primary hover:text-primary/60 text-xs sm:text-base cursor-pointer transition-colors duration-300"
+                    className=" absolute bottom-0 right-2 flex items-center text-primary hover:text-primary/60 text-xs sm:text-base cursor-pointer transition-colors duration-300"
                   >
                     <X className=" w-3 h-3 sm:w-5 sm:h-5" />
                     <p>close</p>
@@ -220,7 +227,7 @@ export default function OrderItem({ order , loading}: { order: CheckoutCart , lo
               <div className="relative aspect-h-4 aspect-w-4 bg-accent sm:aspect-none group-hover:opacity-75 h-full">
                 <Skeleton
                   className={cn(
-                    " h-28 w-28 rounded-md object-cover object-center  transition-opacity duration-500 opacity-100"
+                    " h-28 w-28 rounded-lg object-cover object-center  transition-opacity duration-500 opacity-100"
                   )}
                 />
               </div>
@@ -253,9 +260,9 @@ export default function OrderItem({ order , loading}: { order: CheckoutCart , lo
                     )}
                   >
                     <div className=" grid grid-cols-3 bg-accent/30 w-fit">
-                      <Skeleton className=" w-6 h-6  md:w-9 md:h-9" />
-                      <Skeleton className=" w-6 h-6  md:w-9 md:h-9" />
-                      <Skeleton className=" w-6 h-6  md:w-9 md:h-9" />
+                      <Skeleton className=" w-6 h-6 " />
+                      <Skeleton className=" w-6 h-6 " />
+                      <Skeleton className=" w-6 h-6 " />
                     </div>
                   </div>
 

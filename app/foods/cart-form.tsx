@@ -19,7 +19,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useEffect, useState } from "react";
 import { AddToCart } from "../_actions";
 import { useUpdateCart } from "@/components/context-hooks/cart-context";
-import { useUpdateIsOpenCart } from "@/components/context-hooks/add-to-cart-context";
 
 export const cartFormSchema = z.object({
   id: z.string(),
@@ -30,12 +29,11 @@ export const cartFormSchema = z.object({
   option: z.enum(["small" , "large"]),
 });
 
-export default function CartForm({ food }: { food: Food }) {
+export default function CartForm({ food , setOpen }: { food: Food , setOpen: (value: React.SetStateAction<boolean>) => void; }) {
   const [load, setLoad] = useState<boolean>(false);
   const [isLarge, setisLarge] = useState<boolean>(false);
   const [Total, setTotal] = useState<number>(0);
 
-  const setIsOpen = useUpdateIsOpenCart();
 
   const setCartItems = useUpdateCart();
 
@@ -70,8 +68,8 @@ export default function CartForm({ food }: { food: Food }) {
     setLoad(true);
     await AddToCart(values);
     await setCartItems();
+    setOpen(false);
     setLoad(false);
-    setIsOpen();
   }
 
   useEffect(() => {
@@ -101,7 +99,7 @@ export default function CartForm({ food }: { food: Food }) {
             <div className="relative pr-9 sm:grid grid-cols-2 sm:gap-x-14 sm:pr-0 items-center">
               <div>
                 <div className="flex justify-between">
-                  <h3 className="text-foreground text-2xl sm:text-3xl font-bold">
+                  <h3 className="text-foreground text-2xl font-bold">
                     {food.name}
                   </h3>
                 </div>
@@ -114,7 +112,7 @@ export default function CartForm({ food }: { food: Food }) {
                       <FormControl>
                         <Input
                           type={"number"}
-                          className=" xl:text-sm 2xl:text-lg"
+                          className="text-sm"
                           placeholder="Your first name"
                           {...field}
                         />
@@ -146,7 +144,7 @@ export default function CartForm({ food }: { food: Food }) {
                                       value={option}
                                     />
                                   </FormControl>
-                                  <FormLabel className=" md:text-lg cursor-pointer">
+                                  <FormLabel className=" cursor-pointer">
                                     {option && option === "large" ? (
                                       <span className=" flex items-center h-fit space-x-2">
                                         <p>{option}</p>
@@ -172,7 +170,7 @@ export default function CartForm({ food }: { food: Food }) {
                   ) : null}
                 </div>
 
-                <p className="mt-1 text-xs sm:text-sm xl:text-lg font-medium text-primary">
+                <p className="mt-1 text-xs sm:text-sm font-medium text-primary">
                   {Intl.NumberFormat("en-LK", {
                     style: "currency",
                     currency: "LKR",
@@ -184,12 +182,12 @@ export default function CartForm({ food }: { food: Food }) {
                 <div className=" grid grid-cols-3 border border-border rounded-sm bg-accent/30 w-fit">
                   <span
                     onClick={handleDropAmount}
-                    className=" select-none hover:bg-primary/5 focus:bg-primary/10 transition-colors duration-300 cursor-pointer aspect-square border-r border-border w-6 md:w-9 xl:w-10 flex justify-center items-center text-foreground font-extrabold"
+                    className=" select-none hover:bg-primary/5 focus:bg-primary/10 transition-colors duration-300 cursor-pointer aspect-square border-r border-border w-6 flex justify-center items-center text-foreground font-extrabold"
                   >
                     -
                   </span>
 
-                  <span className=" relative aspect-square w-6 md:w-9 xl:w-10 ">
+                  <span className=" relative aspect-square w-6 ">
                     <FormField
                       control={form.control}
                       name={"amount"}
@@ -214,7 +212,7 @@ export default function CartForm({ food }: { food: Food }) {
 
                   <span
                     onClick={handleAddAmount}
-                    className=" select-none hover:bg-primary/5 focus:bg-primary/10 transition-colors duration-300 cursor-pointer aspect-square border-l border-border w-6 md:w-9 xl:w-10 flex justify-center items-center text-foreground font-extrabold"
+                    className=" select-none hover:bg-primary/5 focus:bg-primary/10 transition-colors duration-300 cursor-pointer aspect-square border-l border-border w-6 flex justify-center items-center text-foreground font-extrabold"
                   >
                     +
                   </span>
@@ -222,7 +220,7 @@ export default function CartForm({ food }: { food: Food }) {
               </div>
             </div>
 
-            <p className="flex space-x-2 text-xs sm:text-sm  xl:text-lg text-accent-foreground">
+            <p className="flex space-x-2 text-xs sm:text-sm  text-accent-foreground">
               {food.description}
             </p>
           </div>
@@ -232,7 +230,7 @@ export default function CartForm({ food }: { food: Food }) {
           type="submit"
           variant={"default"}
           disabled={load}
-          className={cn(" w-full sm:font-bold  text-sm md:text-lg")}
+          className={cn(" w-full sm:font-bold  text-sm")}
         >
           {!load ? `Add to cart Total :${Intl.NumberFormat("en-LK" , {
             style : 'currency',

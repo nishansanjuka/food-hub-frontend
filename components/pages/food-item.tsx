@@ -8,10 +8,11 @@ import { Fragment, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import PopDrawer from "../pop-drawer";
 import CartForm from "@/app/foods/cart-form";
-import { CartFormProvider } from "../context-hooks/add-to-cart-context";
 
 export default function FoodItem({ food }: { food: Food }) {
   const [open, setOpen] = useState(false);
+
+
 
   const { ref, inView } = useInView({
     triggerOnce: true,
@@ -69,7 +70,6 @@ export default function FoodItem({ food }: { food: Food }) {
         </div>
       </div>
 
-      <CartFormProvider>
         {open && (
           <PopDrawer
             key={food.description}
@@ -78,10 +78,9 @@ export default function FoodItem({ food }: { food: Food }) {
             open={open}
             setOpen={setOpen}
           >
-            <CartForm food={food} />
+            <CartForm food={food} setOpen={setOpen} />
           </PopDrawer>
         )}
-      </CartFormProvider>
     </Fragment>
   );
 }

@@ -32,26 +32,26 @@ export function ThemesMenu({width = 'w-full'} : {width? : string}) {
           <MenubarTrigger
             className={cn(" xl:text-md 2xl:text-xl w-full py-2 px-3 outline-none")}
           >
-            <Icons.SwatchBook className="mr-2 h-4 w-4 sm:w-6 sm:h-6" />
+            <Icons.SwatchBook className="mr-2 h-4 w-4 sm:w-5 sm:h-5" />
             {width === 'w-full' && <div className=" flex items-center justify-between w-full">
-              <p>Themes</p>
+              <p className=" text-base md:text-sm">Themes</p>
               <Icons.ChevronRight />
             </div>}
           </MenubarTrigger>
 
           <MenubarContent className=" border-border">
             <MenubarItem onClick={() => setTheme("light")} className=" cursor-pointer flex space-x-2 xl:text-md 2xl:text-xl">
-              <Icons.Sun className=" w-4 h-4 sm:w-6 sm:h-6 " />
+              <Icons.Sun className=" w-4 h-4 sm:w-5 sm:h-5 " />
               <p>Light</p>
             </MenubarItem>
             <MenubarSeparator />
             <MenubarItem onClick={() => setTheme("dark")} className=" flex space-x-2 xl:text-md 2xl:text-xl cursor-pointer">
-              <Icons.MoonStar className=" w-4 h-4 sm:w-6 sm:h-6 " />
+              <Icons.MoonStar className=" w-4 h-4 sm:w-5 sm:h-5 " />
               <p>Dark</p>
             </MenubarItem>
             <MenubarSeparator />
             <MenubarItem onClick={() => setTheme("system")} className=" flex space-x-2 xl:text-md 2xl:text-xl cursor-pointer">
-              <Icons.Palette className=" w-4 h-4 sm:w-6 sm:h-6 " />
+              <Icons.Palette className=" w-4 h-4 sm:w-5 sm:h-5 " />
               <p>System</p>
             </MenubarItem>
           </MenubarContent>

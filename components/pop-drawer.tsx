@@ -19,10 +19,8 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import {
-  useIsOpenCart,
-  useUpdateIsOpenCart,
-} from "./context-hooks/add-to-cart-context";
+
+
 
 export default function PopDrawer({
   children,
@@ -39,18 +37,10 @@ export default function PopDrawer({
 }) {
   const isDesktop = useMediaQuery({ minWidth: 768 });
 
-  const setIsOpen = useUpdateIsOpenCart();
-  const isOpen = useIsOpenCart();
-
-  React.useEffect(() => {
-    open = isOpen;
-    setOpen = setIsOpen;
-  }, [setIsOpen , isOpen]);
-
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className=" sm:w-fit sm:max-w-[650px] xl:max-w-[700px] px-10">
+        <DialogContent className=" w-fit">
           <DialogHeader>
             <DialogTitle className=" text-2xl">{title}</DialogTitle>
             <DialogDescription className=" text-sm">

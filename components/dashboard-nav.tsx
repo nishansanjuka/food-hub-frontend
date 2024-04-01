@@ -43,8 +43,8 @@ export function DashboardNav({ items, setOpen }: DashboardNavProps) {
                 )}
                 
               >
-                <Icon className="mr-2 h-4 w-4 sm:w-6 sm:h-6" />
-                <span className=" xl:text-md 2xl:text-xl">{item.title}</span>
+                <Icon className="mr-2 h-4 w-4 sm:w-5 sm:h-5" />
+                <span className=" xl:text-md">{item.title}</span>
               </span>
             </Link>
           )
