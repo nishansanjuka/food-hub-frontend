@@ -14,7 +14,7 @@ export default function HomeNav() {
             <Link key={index} href={item.disabled ? "/" : item.href}>
               <span
                 className={cn(
-                  "before:content-[' '] underline-offset-2 group flex items-center text-sm sm:text-xl font-extrabold hover:text-primary tracking-wider"
+                  "before:content-[' '] underline-offset-2 group flex items-center text-sm sm:text-sm font-extrabold hover:text-primary tracking-wider"
                 )}
               >
                 <span>{item.title.toUpperCase()}</span>

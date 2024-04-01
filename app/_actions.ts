@@ -8,15 +8,17 @@ import { sortCart } from "@/lib/handle-cart";
 import { foods } from "@/constants/data";
 
 export interface Cart {
-  id : number,
-  amount : number,
-  option : "small" | "large"
+  id: number;
+  amount: number;
+  option: "small" | "large";
 }
 
-export interface PopCart {
-  name : string
-  imgSrc : string
-  cart : Cart
+export interface CheckoutCart {
+  name: string;
+  imgSrc: string;
+  price: number;
+  additionPrice: number;
+  cart: Cart;
 }
 
 export async function setUserBio(user: z.infer<typeof bioformSchema>) {
@@ -71,19 +73,19 @@ export async function getUserShippingInfo(): Promise<z.infer<
   }
 }
 
-
-
-export async function AddToCart(data : z.infer<typeof cartFormSchema>) {
-  
+export async function AddToCart(data: z.infer<typeof cartFormSchema>) {
   const existingCart = cookies().get("default-cart");
 
-  const cartData :Cart = {
-    id : parseInt(data.id),
-    amount : parseInt(data.amount),
-    option : data.option
-  }
+  const cartData: Cart = {
+    id: parseInt(data.id),
+    amount: parseInt(data.amount),
+    option: data.option,
+  };
 
-  const newCart = [...JSON.parse(existingCart?.value ? existingCart.value : '[]') , cartData];
+  const newCart = [
+    ...JSON.parse(existingCart?.value ? existingCart.value : "[]"),
+    cartData,
+  ];
 
   const expires = new Date();
   expires.setFullYear(expires.getFullYear() + 10);
@@ -99,31 +101,92 @@ export async function AddToCart(data : z.infer<typeof cartFormSchema>) {
   });
 }
 
-
-export async function GetCart() : Promise<PopCart[]> {
-  
+export async function GetCart(): Promise<CheckoutCart[]> {
   const existingCart = cookies().get("default-cart");
 
-  const sortedCart = sortCart(JSON.parse(existingCart?.value ? existingCart.value : '[]')); 
+  const sortedCart = sortCart(
+    JSON.parse(existingCart?.value ? existingCart.value : "[]")
+  );
 
-  if(sortedCart.length > 0) {
-    const renders: PopCart[] = sortedCart.map((cart) => {
-      const matchingFood = foods.find((food) => food.id === cart.id);
-      if (matchingFood) {
+  if (sortedCart.length > 0) {
+    const renders: CheckoutCart[] = sortedCart
+      .map((cart) => {
+        const matchingFood = foods.find((food) => food.id === cart.id);
+        if (matchingFood) {
           return {
-              cart: cart,
-              name: matchingFood.name,
-              imgSrc: matchingFood.imageSrc
-          };
-      } else {
+            cart: cart,
+            name: matchingFood.name,
+            imgSrc: matchingFood.imageSrc,
+            price: matchingFood.price,
+            additionPrice: matchingFood.additionPrice,
+          } as CheckoutCart;
+        } else {
           return null; // Or handle the case where there's no matching food
-      }
-  }).filter((render) => render !== null) as PopCart[];
+        }
+      })
+      .filter((render) => render !== null) as CheckoutCart[];
 
     return renders;
   }
 
-  
   return [];
+}
 
+
+export async function updateCart(cartId: number, cartOption: "small" | "large", newAmount: number) {
+
+  
+  const expires = new Date();
+  expires.setFullYear(expires.getFullYear() + 10);
+
+  const existingCart = cookies().get("default-cart");
+
+  const sortedCart : Cart[] = sortCart(
+    JSON.parse(existingCart?.value ? existingCart.value : "[]")
+  );
+  
+  const updated =  sortedCart.map(({id , amount , option}) => {
+      if (id === cartId && option === cartOption) {
+          return { ...{id , amount , option }, amount: newAmount };
+      }
+      else {
+        return {id , amount , option}
+      }
+  });
+
+  console.log(updated);
+
+
+  cookies().set({
+    name: "default-cart",
+    value: JSON.stringify(updated),
+    httpOnly: true,
+    path: "/",
+    expires,
+  });
+}
+
+
+export async function removeCartItem(cartId: number, cartOption: "small" | "large") {
+
+  
+  const expires = new Date();
+  expires.setFullYear(expires.getFullYear() + 10);
+
+  const existingCart = cookies().get("default-cart");
+
+  const sortedCart : Cart[] = sortCart(
+    JSON.parse(existingCart?.value ? existingCart.value : "[]")
+  );
+  
+  const updated =  sortedCart.filter(item => !(item.id === cartId && item.option === cartOption));
+
+
+  cookies().set({
+    name: "default-cart",
+    value: JSON.stringify(updated),
+    httpOnly: true,
+    path: "/",
+    expires,
+  });
 }

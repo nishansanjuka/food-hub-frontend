@@ -12,6 +12,8 @@ import CartForm from "@/app/foods/cart-form";
 export default function FoodItem({ food }: { food: Food }) {
   const [open, setOpen] = useState(false);
 
+
+
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -58,17 +60,27 @@ export default function FoodItem({ food }: { food: Food }) {
             <p className="text-sm italic text-card-foreground/50">
               {food.options[0]}
             </p>
-            <p className="text-base font-medium text-primary">{Intl.NumberFormat("en-LK" , {
-            style : 'currency',
-            currency : 'LKR'
-          }).format(food.price)}</p>
+            <p className="text-base font-medium text-primary">
+              {Intl.NumberFormat("en-LK", {
+                style: "currency",
+                currency: "LKR",
+              }).format(food.price)}
+            </p>
           </div>
         </div>
       </div>
 
-      {open && <PopDrawer key={food.description} title={'Add To Cart'} description={'you can manage your shopping bag later'} open={open} setOpen={setOpen}>
-        <CartForm food={food} />
-      </PopDrawer>}
+        {open && (
+          <PopDrawer
+            key={food.description}
+            title={"Add To Cart"}
+            description={"you can manage your shopping bag later"}
+            open={open}
+            setOpen={setOpen}
+          >
+            <CartForm food={food} setOpen={setOpen} />
+          </PopDrawer>
+        )}
     </Fragment>
   );
 }

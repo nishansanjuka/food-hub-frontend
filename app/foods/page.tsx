@@ -19,7 +19,9 @@ export default function FoodsPage() {
               or discover something new to try!
             </p>
           </div>
+          <div className="  hidden sm:block">
           <PopUpCart/>
+          </div>
         </div>
         <div className="ml-5 sm:ml-0 border-b pt-3 w-[80%] sm:w-full border-border"></div>
         <Foods foods={foods} />

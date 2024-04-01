@@ -4,20 +4,25 @@ import { Fragment } from "react";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 import { Popover, Transition } from "@headlessui/react";
 import { ScrollArea } from "../ui/scroll-area";
-import { Cart, GetCart, PopCart } from "@/app/_actions";
+import { Cart, GetCart, CheckoutCart } from "@/app/_actions";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useCart, useUpdateCart } from "../context-hooks/cart-context";
 
 export default function PopUpCart() {
-  const [cartItems, setCartItems] = useState<PopCart[] | null>(null);
+  
 
   const pathName = usePathname();
 
+  const cartItems = useCart();
+
+  const setCartItems = useUpdateCart();
+
   useEffect(() => {
     async function getCart() {
-      setCartItems(await GetCart());
+      await setCartItems();
     }
     getCart();
   }, []);
@@ -34,7 +39,7 @@ export default function PopUpCart() {
         </span>
       </Link>
       <Popover className="ml-4  hidden sm:flow-root text-sm lg:relative lg:ml-8">
-        <Popover.Button className="group -m-2 flex items-center p-2">
+        <Popover.Button onClick={ async () => await setCartItems()} className="group -m-2 flex items-center p-2">
           <ShoppingBagIcon
             className="h-6 w-6 flex-shrink-0 text-foreground group-hover:text-accent-foreground"
             aria-hidden="true"
