@@ -8,6 +8,7 @@ import { Fragment, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import PopDrawer from "../pop-drawer";
 import CartForm from "@/app/foods/cart-form";
+import { CartFormProvider } from "../context-hooks/add-to-cart-context";
 
 export default function FoodItem({ food }: { food: Food }) {
   const [open, setOpen] = useState(false);
@@ -58,17 +59,29 @@ export default function FoodItem({ food }: { food: Food }) {
             <p className="text-sm italic text-card-foreground/50">
               {food.options[0]}
             </p>
-            <p className="text-base font-medium text-primary">{Intl.NumberFormat("en-LK" , {
-            style : 'currency',
-            currency : 'LKR'
-          }).format(food.price)}</p>
+            <p className="text-base font-medium text-primary">
+              {Intl.NumberFormat("en-LK", {
+                style: "currency",
+                currency: "LKR",
+              }).format(food.price)}
+            </p>
           </div>
         </div>
       </div>
 
-      {open && <PopDrawer key={food.description} title={'Add To Cart'} description={'you can manage your shopping bag later'} open={open} setOpen={setOpen}>
-        <CartForm food={food} />
-      </PopDrawer>}
+      <CartFormProvider>
+        {open && (
+          <PopDrawer
+            key={food.description}
+            title={"Add To Cart"}
+            description={"you can manage your shopping bag later"}
+            open={open}
+            setOpen={setOpen}
+          >
+            <CartForm food={food} />
+          </PopDrawer>
+        )}
+      </CartFormProvider>
     </Fragment>
   );
 }

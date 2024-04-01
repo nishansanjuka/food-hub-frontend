@@ -1,8 +1,6 @@
 "use client";
 
 import * as React from "react";
-
-import { cn } from "@/lib/utils";
 import { useMediaQuery } from "react-responsive";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,7 +9,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Drawer,
@@ -21,8 +18,11 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
 } from "@/components/ui/drawer";
+import {
+  useIsOpenCart,
+  useUpdateIsOpenCart,
+} from "./context-hooks/add-to-cart-context";
 
 export default function PopDrawer({
   children,
@@ -39,13 +39,23 @@ export default function PopDrawer({
 }) {
   const isDesktop = useMediaQuery({ minWidth: 768 });
 
+  const setIsOpen = useUpdateIsOpenCart();
+  const isOpen = useIsOpenCart();
+
+  React.useEffect(() => {
+    open = isOpen;
+    setOpen = setIsOpen;
+  }, [setIsOpen , isOpen]);
+
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className=" sm:w-fit sm:max-w-[650px] xl:max-w-[700px] px-10">
           <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-            <DialogDescription>{description}</DialogDescription>
+            <DialogTitle className=" text-2xl">{title}</DialogTitle>
+            <DialogDescription className=" text-sm">
+              {description}
+            </DialogDescription>
           </DialogHeader>
           <div>{children}</div>
         </DialogContent>

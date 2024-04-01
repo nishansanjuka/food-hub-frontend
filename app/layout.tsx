@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import HeaderSection from "@/components/header-section";
 import DesktopSideBar from "@/components/layout/desktop-sidebar";
 import Footer from "@/components/footer";
+import { CartProvider } from "@/components/context-hooks/cart-context";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -39,9 +40,11 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <HeaderSection />
-          <DesktopSideBar/>
-          {children}
+          <CartProvider>
+            <HeaderSection />
+            <DesktopSideBar />
+            {children}
+          </CartProvider>
         </ThemeProvider>
       </body>
     </html>

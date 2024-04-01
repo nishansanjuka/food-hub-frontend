@@ -1,19 +1,26 @@
 "use client";
 
-export default function Example() {
-  return (
-    <header className="relative bg-white">
-      <nav aria-label="Top" className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div className="relative border-b border-gray-200 px-4 pb-14 sm:static sm:px-0 sm:pb-0">
-          <div className="flex h-16 items-center justify-between">
-            <div className="flex flex-1 items-center justify-end">
+import { Button } from "@/components/ui/button";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
-              {/* Cart */}
-              
-            </div>
-          </div>
-        </div>
-      </nav>
-    </header>
-  )
+export default function Example() {
+  const { toast } = useToast();
+  return (
+    <div>
+      <Button
+        variant="outline"
+        onClick={() => {
+          toast({
+            variant: "destructive",
+            title: "Uh oh! Something went wrong.",
+            description: "There was a problem with your request.",
+            action: <ToastAction altText="Try again">Try again</ToastAction>,
+          });
+        }}
+      >
+        Show Toast
+      </Button>
+    </div>
+  );
 }

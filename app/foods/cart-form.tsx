@@ -18,12 +18,14 @@ import { z } from "zod";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useEffect, useState } from "react";
 import { AddToCart } from "../_actions";
+import { useUpdateCart } from "@/components/context-hooks/cart-context";
+import { useUpdateIsOpenCart } from "@/components/context-hooks/add-to-cart-context";
 
 export const cartFormSchema = z.object({
   id: z.string(),
   amount: z.string().refine((value) => value !== "0", {
     message: "amount cannot be '0'",
-    path: ["id"],
+    path: ["amount"],
   }),
   option: z.enum(["small" , "large"]),
 });
@@ -32,6 +34,10 @@ export default function CartForm({ food }: { food: Food }) {
   const [load, setLoad] = useState<boolean>(false);
   const [isLarge, setisLarge] = useState<boolean>(false);
   const [Total, setTotal] = useState<number>(0);
+
+  const setIsOpen = useUpdateIsOpenCart();
+
+  const setCartItems = useUpdateCart();
 
   const form = useForm<z.infer<typeof cartFormSchema>>({
     resolver: zodResolver(cartFormSchema),
@@ -63,7 +69,9 @@ export default function CartForm({ food }: { food: Food }) {
   async function onSubmit(values: z.infer<typeof cartFormSchema>) {
     setLoad(true);
     await AddToCart(values);
+    await setCartItems();
     setLoad(false);
+    setIsOpen();
   }
 
   useEffect(() => {
@@ -76,6 +84,7 @@ export default function CartForm({ food }: { food: Food }) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex py-6 sm:py-10 items-center">
+          
           <div className="relative aspect-h-4 aspect-w-4 bg-accent sm:aspect-none group-hover:opacity-75 h-full">
             <Image
               src={food.imageSrc}
@@ -92,7 +101,7 @@ export default function CartForm({ food }: { food: Food }) {
             <div className="relative pr-9 sm:grid grid-cols-2 sm:gap-x-14 sm:pr-0 items-center">
               <div>
                 <div className="flex justify-between">
-                  <h3 className="text-foreground text-3xl font-bold">
+                  <h3 className="text-foreground text-2xl sm:text-3xl font-bold">
                     {food.name}
                   </h3>
                 </div>
@@ -124,7 +133,7 @@ export default function CartForm({ food }: { food: Food }) {
                             <RadioGroup
                               onValueChange={field.onChange}
                               defaultValue={field.value}
-                              className=" flex items-center my-1"
+                              className=" flex flex-col sm:flex-row sm:items-center my-1"
                             >
                               {Object.values(food.options).map((option) => (
                                 <FormItem
@@ -222,12 +231,15 @@ export default function CartForm({ food }: { food: Food }) {
         <Button
           type="submit"
           variant={"default"}
-          className=" w-full sm:font-bold  text-sm md:text-lg"
+          disabled={load}
+          className={cn(" w-full sm:font-bold  text-sm md:text-lg")}
         >
-          Add to cart Total : {Intl.NumberFormat("en-LK" , {
+          {!load ? `Add to cart Total :${Intl.NumberFormat("en-LK" , {
             style : 'currency',
             currency : 'LKR'
-          }).format(Total)}
+          }).format(Total)}` : 'please wait...'}
+          
+          
         </Button>
       </form>
     </Form>
