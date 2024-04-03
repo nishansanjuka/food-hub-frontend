@@ -30,7 +30,7 @@ export function ThemesMenu({width = 'w-full'} : {width? : string}) {
       <Menubar className=" outline-none border-none w-full rounded-md">
         <MenubarMenu>
           <MenubarTrigger
-            className={cn(" xl:text-md 2xl:text-xl w-full py-2 px-3 outline-none")}
+            className={cn(" xl:text-md w-full py-2 px-3 outline-none")}
           >
             <Icons.SwatchBook className="mr-2 h-4 w-4 sm:w-5 sm:h-5" />
             {width === 'w-full' && <div className=" flex items-center justify-between w-full">
@@ -40,17 +40,17 @@ export function ThemesMenu({width = 'w-full'} : {width? : string}) {
           </MenubarTrigger>
 
           <MenubarContent className=" border-border">
-            <MenubarItem onClick={() => setTheme("light")} className=" cursor-pointer flex space-x-2 xl:text-md 2xl:text-xl">
+            <MenubarItem onClick={() => setTheme("light")} className=" cursor-pointer flex space-x-2 xl:text-md">
               <Icons.Sun className=" w-4 h-4 sm:w-5 sm:h-5 " />
               <p>Light</p>
             </MenubarItem>
             <MenubarSeparator />
-            <MenubarItem onClick={() => setTheme("dark")} className=" flex space-x-2 xl:text-md 2xl:text-xl cursor-pointer">
+            <MenubarItem onClick={() => setTheme("dark")} className=" flex space-x-2 xl:text-md cursor-pointer">
               <Icons.MoonStar className=" w-4 h-4 sm:w-5 sm:h-5 " />
               <p>Dark</p>
             </MenubarItem>
             <MenubarSeparator />
-            <MenubarItem onClick={() => setTheme("system")} className=" flex space-x-2 xl:text-md 2xl:text-xl cursor-pointer">
+            <MenubarItem onClick={() => setTheme("system")} className=" flex space-x-2 xl:text-md cursor-pointer">
               <Icons.Palette className=" w-4 h-4 sm:w-5 sm:h-5 " />
               <p>System</p>
             </MenubarItem>

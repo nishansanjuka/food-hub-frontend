@@ -7,8 +7,8 @@ import { foods } from "@/constants/data";
 export default function FoodsPage() {
   return (
     <div className="h-screen w-full">
-      <ScrollArea className=" w-full sm:p-20 h-screen">
-        <div className=" w-full flex justify-between pr-2 items-end">
+      <ScrollArea className=" w-full sm:px-20 sm:pt-60 xl:pt-32 2xl:pt-24 h-screen">
+        <div className=" w-full flex md:hidden justify-between pr-2 items-end">
           <div className="w-full  p-5 sm:p-0 pt-24 lg:w-[80%] xl:w-[60%] space-y-2 sm:space-y-4">
             <h1 className=" text-2xl sm:text-4xl font-extrabold text-foreground">
               Delicious Dishes: Explore a World of Flavors
@@ -23,7 +23,7 @@ export default function FoodsPage() {
           <PopUpCart/>
           </div>
         </div>
-        <div className="ml-5 sm:ml-0 border-b pt-3 w-[80%] sm:w-full border-border"></div>
+        <div className="ml-5 sm:ml-0 border-b pt-3 w-[80%] sm:w-full border-border md:border-transparent "></div>
         <Foods foods={foods} />
         <Footer />
       </ScrollArea>

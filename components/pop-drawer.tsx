@@ -40,10 +40,10 @@ export default function PopDrawer({
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className=" w-fit">
+        <DialogContent className=" w-[800px]">
           <DialogHeader>
-            <DialogTitle className=" text-2xl">{title}</DialogTitle>
-            <DialogDescription className=" text-sm">
+            <DialogTitle className=" text-xl">{title}</DialogTitle>
+            <DialogDescription className=" text-xs">
               {description}
             </DialogDescription>
           </DialogHeader>

@@ -12,8 +12,6 @@ import { cn } from "@/lib/utils";
 import { useCart, useUpdateCart } from "../context-hooks/cart-context";
 
 export default function PopUpCart() {
-  
-
   const pathName = usePathname();
 
   const cartItems = useCart();
@@ -29,7 +27,13 @@ export default function PopUpCart() {
 
   return (
     <Fragment>
-      <Link href={'/checkout-order'} className={cn(" flex sm:hidden items-center" ,!pathName.startsWith("/checkout-order") ? "flex" : "hidden")}>
+      <Link
+        href={"/checkout-order"}
+        className={cn(
+          " flex sm:hidden items-center",
+          !pathName.startsWith("/checkout-order") ? "flex" : "hidden"
+        )}
+      >
         <ShoppingBagIcon
           className="h-6 w-6 flex-shrink-0 text-foreground group-hover:text-accent-foreground"
           aria-hidden="true"
@@ -39,7 +43,11 @@ export default function PopUpCart() {
         </span>
       </Link>
       <Popover className="ml-4  hidden sm:flow-root text-sm lg:relative lg:ml-8">
-        <Popover.Button onClick={ async () => await setCartItems()} className="group -m-2 flex items-center p-2">
+        <Popover.Button
+          disabled={cartItems?.length === 0}
+          onClick={async () => await setCartItems()}
+          className="group -m-2 flex items-center p-2"
+        >
           <ShoppingBagIcon
             className="h-6 w-6 flex-shrink-0 text-foreground group-hover:text-accent-foreground"
             aria-hidden="true"
@@ -49,7 +57,7 @@ export default function PopUpCart() {
           </span>
           <span className="sr-only">items in cart, view bag</span>
         </Popover.Button>
-        <Transition
+        {cartItems && <Transition
           as={Fragment}
           enter="transition ease-out duration-200"
           enterFrom="opacity-0"
@@ -58,8 +66,8 @@ export default function PopUpCart() {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Popover.Panel className="absolute z-40 inset-x-0 top-16 mt-px bg-background pb-6 shadow-lg sm:px-2 lg:left-auto lg:right-0 lg:top-full lg:-mr-1.5 lg:mt-3 lg:w-80 lg:rounded-lg lg:ring-1 lg:ring-foreground lg:ring-opacity-5">
-            <ScrollArea className=" h-[300px]">
+          <Popover.Panel className="absolute z-40 w-[300px] right-3 rounded-lg top-16 mt-px bg-background pb-6 shadow-lg sm:px-2 lg:left-auto lg:right-0 lg:top-full lg:-mr-1.5 lg:mt-3 lg:w-80 lg:rounded-lg lg:ring-1 lg:ring-foreground lg:ring-opacity-5">
+            <ScrollArea className=" min-h-fit py-3 h-[300px]">
               <h2 className="sr-only">Shopping Cart</h2>
               <form className="mx-auto max-w-2xl px-4">
                 <ul role="list" className="divide-y divide-border">
@@ -99,15 +107,15 @@ export default function PopUpCart() {
                 <Button
                   variant={"default"}
                   type="submit"
-                  className="w-full rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium shadow-sm hover:bg-primary/70 focus:outline-none focus:ring-2 focus:ring-primary/70 focus:ring-offset-2 focus:ring-offset-accent-foreground transition-colors duration-300"
+                  className="w-full rounded-md border border-transparent bg-primary px-4 py-2 text-xs font-medium shadow-sm hover:bg-primary/70 focus:outline-none focus:ring-2 focus:ring-primary/70 focus:ring-offset-2 focus:ring-offset-accent-foreground transition-colors duration-300"
                 >
-                  Checkout
+                  <Link href={"/checkout-order?checkout=yes"}>Checkout</Link>
                 </Button>
 
                 <p className="mt-6 text-center">
                   <a
-                    href="/checkout-order"
-                    className="text-sm font-medium text-primary hover:text-primary/70 transition-colors duration-300"
+                    href="/checkout-order?checkout=no"
+                    className="text-xs font-medium text-primary hover:text-primary/70 transition-colors duration-300"
                   >
                     View Shopping Bag
                   </a>
@@ -115,7 +123,7 @@ export default function PopUpCart() {
               </form>
             </ScrollArea>
           </Popover.Panel>
-        </Transition>
+        </Transition>}
       </Popover>
     </Fragment>
   );

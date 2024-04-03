@@ -130,7 +130,7 @@ export default function OrderItem({
                   width={500}
                   height={500}
                   className={cn(
-                    " h-28 w-28 rounded-md object-cover object-center  transition-opacity duration-500 opacity-100"
+                    " h-20 w-20 rounded-md object-cover object-center  transition-opacity duration-500 opacity-100"
                   )}
                 />
               </div>
@@ -139,11 +139,11 @@ export default function OrderItem({
                 <div className="relative pr-0 sm:grid grid-cols-2 sm:gap-x-10 sm:pr-0 items-center">
                   <div>
                     <div className="flex justify-between">
-                      <h3 className="text-foreground text-2xl font-bold">
+                      <h3 className="text-foreground text-xl 2xl:text-2xl font-bold">
                         {order.name}
                       </h3>
                     </div>
-                    <div className="mt-1 flex text-xs sm:text-sm">
+                    <div className="mt-1 flex text-xs text-accent-foreground">
                       {order.cart.option}
                     </div>
 
@@ -211,13 +211,12 @@ export default function OrderItem({
                       </button>
                     </div>
                   </div>
-
                   <button
                     onClick={handleRemove}
-                    className=" absolute bottom-0 right-2 flex items-center text-primary hover:text-primary/60 text-xs sm:text-base cursor-pointer transition-colors duration-300"
+                    className=" absolute sm:static xl:absolute bottom-2 xl:bottom-0 md:top-0 right-0 flex items-center text-primary hover:text-primary/60 text-xs sm:text-base cursor-pointer transition-colors duration-300"
                   >
                     <X className=" w-3 h-3 sm:w-5 sm:h-5" />
-                    <p>close</p>
+                    <p>remove</p>
                   </button>
                 </div>
               </div>
@@ -267,7 +266,6 @@ export default function OrderItem({
                   </div>
 
                   <button
-                    onClick={handleRemove}
                     className=" absolute bottom-2 right-0 flex items-center text-primary hover:text-primary/60 text-xs sm:text-base cursor-pointer transition-colors duration-300"
                   >
                     <Skeleton className=" w-10 h-4" />
