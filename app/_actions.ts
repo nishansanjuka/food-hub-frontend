@@ -6,6 +6,8 @@ import { deliveryformSchema } from "./you/delivery-informations/delivery-form";
 import { cartFormSchema } from "./foods/cart-form";
 import { sortCart } from "@/lib/handle-cart";
 import { foods } from "@/constants/data";
+import { redirect } from "next/navigation";
+import { checkoutFormSchema } from "@/components/checkout-form";
 
 export interface Cart {
   id: number;
@@ -19,6 +21,14 @@ export interface CheckoutCart {
   price: number;
   additionPrice: number;
   cart: Cart;
+}
+
+
+export interface DeliveryInfo {
+  client_name : string;
+  address : string;
+  nearest_place : string;
+  phone_number : string;
 }
 
 export async function setUserBio(user: z.infer<typeof bioformSchema>) {
@@ -189,4 +199,35 @@ export async function removeCartItem(cartId: number, cartOption: "small" | "larg
     path: "/",
     expires,
   });
+}
+
+
+export async function getDeliveryInfo() : Promise<z.infer<typeof checkoutFormSchema>> {
+  const bioInfo = await getUserBio();
+  const addressInfo  = await getUserShippingInfo();
+
+  if(!bioInfo || !addressInfo) {
+    return {} as z.infer<typeof checkoutFormSchema>
+  }
+  else {
+    return  {
+      client_name : `${bioInfo.firstname !== undefined ? bioInfo.firstname : ''} ${bioInfo.lastname !== undefined ? bioInfo.lastname : ''}`,
+      phone_number : bioInfo.mobile,
+      address : `${addressInfo.address_line1 !== undefined ? addressInfo.address_line1 : ''}${addressInfo.address_line2 !== undefined ? ',' + addressInfo.address_line2 : ''}`,
+      nearest_place : addressInfo.description
+    }
+  }
+}
+
+
+export async function setCheckoutForm(data : z.infer<typeof checkoutFormSchema>) {
+  await setUserBio({
+    firstname : data.client_name,
+    mobile : data.phone_number
+  })
+
+  await setUserShippingInfo({
+    address_line1 : data.address,
+    description : data.nearest_place
+  })
 }
